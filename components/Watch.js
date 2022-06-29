@@ -17,13 +17,13 @@ export default function Watch() {
 
   return (
     <View style={[styles.watch, { borderColor: theme.primary }]}>
-      <Animated.View style={{ 
-          transform: [{ 
-            rotate: rotate.interpolate({ 
-              inputRange: [0, 1], outputRange: ['0deg', '360deg']
-            }) 
-          }] 
-        }}>
+      <Animated.View style={{
+        transform: [{
+          rotate: rotate.interpolate({
+            inputRange: [0, 1], outputRange: ['0deg', '360deg']
+          })
+        }]
+      }}>
         <View style={[styles.line, { backgroundColor: theme.primary }]}></View>
         <View style={styles.transparentLine}></View>
       </Animated.View>
