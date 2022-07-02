@@ -1,25 +1,25 @@
 import { StyleSheet, View, Animated, Easing } from "react-native";
 import { ThemeContext, useContext } from "../context/theme-context";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export default function Watch() {
   const { theme } = useContext(ThemeContext);
-  const [rotate, setRotate] = useState(new Animated.Value(0));
-
+  const [rotate, setRotate] = useState(useRef(new Animated.Value(0)));
+  
   useEffect(() => {
-    Animated.loop(Animated.timing(rotate, {
+    Animated.loop(Animated.timing(rotate.current, {
       toValue: 1,
       duration: 3000,
       easing: Easing.linear,
       useNativeDriver: true
-    })).start();
-  });
+    })).start();  
+  }, []);
 
   return (
     <View style={[styles.watch, { borderColor: theme.primary }]}>
       <Animated.View style={{
         transform: [{
-          rotate: rotate.interpolate({
+          rotate: rotate.current.interpolate({
             inputRange: [0, 1], outputRange: ['0deg', '360deg']
           })
         }]

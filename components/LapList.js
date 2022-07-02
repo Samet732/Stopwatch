@@ -1,47 +1,18 @@
 import { StyleSheet, FlatList, View, Dimensions, Text } from "react-native";
+import { LapsContext } from "../context/laps-context";
 import { ThemeContext, useContext } from "../context/theme-context";
 import msToTime from './../tools/ms-to-time';
 
-const fakedata = [
-  {
-    id: 1,
-    time: 1000
-  },
-  {
-    id: 2,
-    time: 3500
-  },
-  {
-    id: 3,
-    time: 597300
-  },
-  {
-    id: 4,
-    time: 600000
-  },
-  {
-    id: 5,
-    time: 700000
-  },
-  {
-    id: 6,
-    time: 1000000
-  },
-  {
-    id: 7,
-    time: 30000000
-  }
-];
-
-export default function LapList() {
+export default function LapList({ laps }) {
   const { theme } = useContext(ThemeContext);
+
   const renderItem = ({ item }) => (
     <Item item={item} theme={theme} />
   );
 
   return (
     <FlatList
-      data={fakedata}
+      data={laps}
       renderItem={renderItem}
       keyExtractor={item => item.id}
     />

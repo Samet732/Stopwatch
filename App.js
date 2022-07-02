@@ -1,28 +1,72 @@
-import { useState } from 'react';
-import { StyleSheet, SafeAreaView, View, Dimensions } from 'react-native';
+import { useState, useEffect } from 'react';
+import { StyleSheet, SafeAreaView, View, Dimensions, Text } from 'react-native';
 import Footer from './components/Footer';
-import Header from './components/Header';
+import msToTime from "./tools/ms-to-time";
 import LapList from './components/LapList';
+import Watch from './components/Watch';
 import { ThemeContext, themes } from './context/theme-context';
+import { TimeContext } from './context/time-context';
+import { LapsContext } from './context/laps-context';
 
 export default function App() {
   const [theme, setTheme] = useState(themes.light);
-  const [time, setTime] = useState(0);
-  const context = {
-    theme,
-    setTheme
+  const [time, setTime] = useState({ running: false, startTime: Date.now() });
+  const [laps, setLaps] = useState([]);
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    let id;
+    if (time.running)
+      id = setInterval(() => setCount(() => Date.now() - time.startTime), 100);
+ 
+    return () => { 
+      if (time.running) 
+        clearInterval(id);
+    };
+  }, [time.running]);
+
+  const start = () => {
+    setTime({
+      running: !time.running,
+      startTime: Date.now() - count
+    });
+  };
+
+  const clear = () => {
+    setTime({
+      running: false,
+      startTime: Date.now()
+    });
+    setLaps([]);
+    setCount(0)
+  };
+
+  const lap = () => {
+    let arr = laps.slice(0);
+    arr.push({
+      id: laps.length + 1,
+      time: count
+    });
+    setLaps(arr);
   };
 
   return (
-    <ThemeContext.Provider value={context}>
-      <SafeAreaView style={Object.assign({}, styles.container, { backgroundColor: theme.background })}>
-        <Header time={time} />
-		    <View style={styles.group}>
-          <LapList />
-          <Footer />
-        </View>
-      </SafeAreaView>
-    </ThemeContext.Provider>
+    <TimeContext.Provider value={{ time, setTime }}>
+      <LapsContext.Provider value={{ laps, setLaps }}>
+        <ThemeContext.Provider value={{ theme, setTheme }}>
+          <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+            <View style={styles.stopwatch}>
+              <Watch />
+              <Text style={[styles.text, { color: theme.text }]}>{msToTime(count)}</Text>
+            </View>
+            <View style={styles.group}>
+              <LapList laps={laps} />
+              <Footer start={start} clear={clear} lap={lap} />
+            </View>
+          </SafeAreaView>
+        </ThemeContext.Provider>
+      </LapsContext.Provider>
+    </TimeContext.Provider>
   );
 }
 
@@ -33,8 +77,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
-  group: { 
-    flex: 2, 
-    width: Dimensions.get('window').width 
+  group: {
+    flex: 2,
+    width: Dimensions.get('window').width
+  },
+
+  stopwatch: {
+    flex: 1,
+    width: Dimensions.get('window').width,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+
+  text: {
+    marginTop: 30,
+    textAlign: 'center',
+    fontWeight: "bold",
+    fontSize: 42
   }
 });

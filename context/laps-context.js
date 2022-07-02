@@ -1,8 +1,8 @@
 import { createContext, useContext } from "react";
 
-const LapContext = createContext();
+const LapsContext = createContext();
 
 export {
   useContext,
-  LapContext
+  LapsContext
 };
