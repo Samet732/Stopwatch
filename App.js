@@ -6,7 +6,6 @@ import LapList from './components/LapList';
 import Watch from './components/Watch';
 import { ThemeContext, themes } from './context/theme-context';
 import { TimeContext } from './context/time-context';
-import { LapsContext } from './context/laps-context';
 
 export default function App() {
   const [theme, setTheme] = useState(themes.light);
@@ -18,9 +17,9 @@ export default function App() {
     let id;
     if (time.running)
       id = setInterval(() => setCount(() => Date.now() - time.startTime), 100);
- 
-    return () => { 
-      if (time.running) 
+
+    return () => {
+      if (time.running)
         clearInterval(id);
     };
   }, [time.running]);
@@ -52,20 +51,18 @@ export default function App() {
 
   return (
     <TimeContext.Provider value={{ time, setTime }}>
-      <LapsContext.Provider value={{ laps, setLaps }}>
-        <ThemeContext.Provider value={{ theme, setTheme }}>
-          <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
-            <View style={styles.stopwatch}>
-              <Watch />
-              <Text style={[styles.text, { color: theme.text }]}>{msToTime(count)}</Text>
-            </View>
-            <View style={styles.group}>
-              <LapList laps={laps} />
-              <Footer start={start} clear={clear} lap={lap} />
-            </View>
-          </SafeAreaView>
-        </ThemeContext.Provider>
-      </LapsContext.Provider>
+      <ThemeContext.Provider value={{ theme, setTheme }}>
+        <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+          <View style={styles.stopwatch}>
+            <Watch />
+            <Text style={[styles.text, { color: theme.text }]}>{msToTime(count)}</Text>
+          </View>
+          <View style={styles.group}>
+            <LapList laps={laps} />
+            <Footer start={start} clear={clear} lap={lap} />
+          </View>
+        </SafeAreaView>
+      </ThemeContext.Provider>
     </TimeContext.Provider>
   );
 }

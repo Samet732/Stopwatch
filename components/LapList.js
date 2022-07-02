@@ -1,5 +1,4 @@
 import { StyleSheet, FlatList, View, Dimensions, Text } from "react-native";
-import { LapsContext } from "../context/laps-context";
 import { ThemeContext, useContext } from "../context/theme-context";
 import msToTime from './../tools/ms-to-time';
 
