@@ -1,6 +1,7 @@
 import { StyleSheet, FlatList, View, Dimensions, Text } from "react-native";
 import { ThemeContext, useContext } from "../context/theme-context";
 import msToTime from './../tools/ms-to-time';
+import React from "react";
 
 export default function LapList({ laps }) {
   const { theme } = useContext(ThemeContext);

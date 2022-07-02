@@ -1,6 +1,6 @@
 import { StyleSheet, View, Animated, Easing } from "react-native";
 import { ThemeContext, useContext } from "../context/theme-context";
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 export default function Watch() {
   const { theme } = useContext(ThemeContext);

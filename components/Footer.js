@@ -3,6 +3,7 @@ import { ThemeContext, themes, useContext } from "../context/theme-context";
 import { TimeContext } from "../context/time-context";
 import Sun from './../assets/brightness-high.png'
 import Moon from './../assets/moon-fill.png'
+import React from "react";
 
 export default function Footer({ start, clear, lap }) {
   const { theme, setTheme } = useContext(ThemeContext);

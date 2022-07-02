@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, SafeAreaView, View, Dimensions, Text } from 'react-native';
 import Footer from './components/Footer';
 import msToTime from "./tools/ms-to-time";
